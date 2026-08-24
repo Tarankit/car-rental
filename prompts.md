@@ -39,3 +39,23 @@ Reviewed and adjusted by hand before committing: made 422 vs 400 boundaries expl
 (unknown location = 400 bad parameter; document mismatch = 422 semantic rejection), and
 added `GET /cars/locations` so client-side validation is driven by server truth instead of
 a duplicated hardcoded list.
+
+## 3. Domain, providers & core services
+
+**Prompt (summarised):** *"Implement the domain model, ICarRentalProvider, both stubs, and
+the search/booking services exactly per spec.md, plus anchor tests for the surcharge rule."*
+
+Decisions during implementation:
+
+- The weekend rule (`IsWeekendNight`) lives **inside** `BudgetWheelsProvider`, not in a
+  shared helper — it is that provider's pricing rule, and keeping it there is what makes
+  the "add a third provider" story honest. Only the night-enumeration helper
+  (`RentalPeriod.Nights`, dates in `[from, to)`) is shared domain vocabulary.
+- Anchor tests were written **with** the implementation (full suite comes later): the
+  spec.md worked example, a weekday-only stay, a single Friday night, and a full week.
+  One test explicitly asserts the total is NOT `rate × days`.
+- Tooling catch, not AI: this machine only has the .NET 10 runtime, so the `net8.0` target
+  wouldn't launch. Added `<RollForward>LatestMajor</RollForward>` to both projects — an
+  evaluator with only SDK 8 runs on 8; a machine with only a newer runtime rolls forward.
+  Similarly, SDK 10's default `.slnx` solution format was replaced with a classic `.sln`
+  so SDK 8 can build it.
