@@ -80,3 +80,33 @@ Decisions during implementation:
   pickup/category, bad date format, sorted results, category filter, international +
   NationalId → 422, unavailable vehicle → 422, booking round-trip, unknown reference →
   404, domestic + NationalId → 201) before committing. Swagger UI added for development.
+
+## 5. Test suite — and a reversed framework decision
+
+**Prompt (summarised):** *"Write the full suite: pricing theories (incl. month boundary),
+aggregation/sort/category, document-policy matrix, booking service, and
+WebApplicationFactory endpoint tests."*
+
+47 tests. Notable choices:
+
+- A `FlatFeeThirdProvider` fake lives in the tests purely to prove the extensibility
+  claim: a third provider with a different pricing model plugs into `CarSearchService`
+  with zero core changes, and sorts correctly into the unified list.
+- One endpoint test pins the earlier binding decision: omitting `documentType` returns
+  **400**, not a silent `Passport` default.
+- The month-boundary theory (Thu 2026-10-29 → Mon 2026-11-02 = 184 at base 40) guards the
+  night iterator across calendar edges. All hand-computed expected values; day-of-week
+  claims in test comments were verified against a calendar before asserting.
+
+**Reversed decision (was D6):** the original `net8.0` target was chosen for evaluator
+compatibility, with `RollForward` so newer-runtime machines could still run it. The test
+suite disproved that trade-off: on a .NET 10-runtime-only machine, the rolled-forward
+System.Text.Json 10 requires `PipeWriter.UnflushedBytes`, which the net8 TestHost's
+response writer doesn't implement — all 13 endpoint tests failed with 500s (the real
+Kestrel server was unaffected, which is exactly why this would have shipped unnoticed
+without integration tests). First suspicion was Swashbuckle's transitive
+System.Text.Json; pinning it changed nothing — the newer STJ came from the runtime
+roll-forward, not the package graph. Everything now targets `net10.0` (current LTS) with
+aligned 10.x packages: one consistent target beats a nominally-compatible one that breaks
+test tooling on modern machines. The brief's ".NET 8+" permits this; README states the
+prerequisite.

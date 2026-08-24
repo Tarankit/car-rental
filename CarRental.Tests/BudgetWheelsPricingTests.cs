@@ -48,4 +48,26 @@ public class BudgetWheelsPricingTests
         var total = await TotalFor("BW-CMP-1", new DateOnly(2026, 9, 7), new DateOnly(2026, 9, 14));
         Assert.Equal(380m, total);
     }
+
+    [Fact]
+    public async Task Weekend_crossing_a_month_boundary_is_surcharged_correctly()
+    {
+        // Thu 2026-10-29 → Mon 2026-11-02: nights Thu, Fri 30, Sat 31, Sun Nov 1.
+        // BW-ECO-1 base 40: 40 + 48 + 48 + 48 = 184.
+        var total = await TotalFor("BW-ECO-1", new DateOnly(2026, 10, 29), new DateOnly(2026, 11, 2));
+        Assert.Equal(184m, total);
+    }
+
+    [Fact]
+    public async Task Displayed_per_day_rate_is_the_base_rate_even_when_surcharge_applies()
+    {
+        // Spec.md P3: the surcharge shows only in the total, never in the per-day rate.
+        var provider = new BudgetWheelsProvider();
+        var offers = await provider.SearchAsync(new SearchCriteria(
+            "Stockholm", new DateOnly(2026, 9, 4), new DateOnly(2026, 9, 5), null));
+        var offer = offers.Single(o => o.Offer.VehicleId == "BW-ECO-1").Offer;
+
+        Assert.Equal(40m, offer.PerDayRate);
+        Assert.Equal(48m, offer.TotalPrice);
+    }
 }

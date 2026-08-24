@@ -215,7 +215,7 @@ Bookings do not survive restart — explicitly out of scope per brief.
 | D3 | Booking a vehicle that is unknown or unavailable → 422 (unprocessable booking), not 404. |
 | D4 | Booking price is re-quoted server-side. |
 | D5 | Location registry is served by the API so client and server validate from one source of truth. |
-| D6 | Backend targets `net8.0` (LTS) for maximum evaluator compatibility; built with any SDK ≥ 8. |
+| D6 | ~~Backend targets `net8.0` (LTS) for maximum evaluator compatibility.~~ **Revised during Phase 4:** targets `net10.0` (current LTS). Running net8.0 test-host assemblies on a rolled-forward newer runtime breaks response serialization (`PipeWriter.UnflushedBytes`), so the "compatible" target was actually fragile on modern machines; one consistent current target is more robust. Rationale in prompts.md §5. |
 
 ## 9. Test plan (core business logic)
 

@@ -10,7 +10,8 @@ Angular frontend, xUnit tests. Runs fully offline — no real APIs, credentials,
 
 ## Prerequisites
 
-- .NET SDK **8.0 or later** (developed with 10.0.200, project targets `net8.0`)
+- .NET SDK **10.0+** (projects target `net10.0`; the brief's ".NET 8+" — see prompts.md §5
+  for why an initial `net8.0` target was reversed)
 - Node.js **20+** (developed with v24)
 
 ## Run
