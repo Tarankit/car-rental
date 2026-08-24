@@ -59,3 +59,24 @@ Decisions during implementation:
   evaluator with only SDK 8 runs on 8; a machine with only a newer runtime rolls forward.
   Similarly, SDK 10's default `.slnx` solution format was replaced with a classic `.sln`
   so SDK 8 can build it.
+
+## 4. API endpoints
+
+**Prompt (summarised):** *"Implement the endpoints with the full 400/422/404 matrix from
+spec.md §5 and verify each case with curl before committing."*
+
+Decisions during implementation:
+
+- Query/body primitives are bound as **strings and validated manually** instead of letting
+  the framework bind `DateOnly`/enums directly. Framework binding failures produce vague
+  400s; manual validation returns field-keyed `ValidationProblem` messages ("'03-09-2026'
+  is not a valid date. Use yyyy-MM-dd.") and catches a subtle bug: a missing
+  `documentType` would otherwise silently deserialise to the enum default (`Passport`).
+- Dates accept **only** ISO `yyyy-MM-dd` (`TryParseExact`) so culture settings on the
+  evaluator's machine cannot change parsing behaviour.
+- Enums serialise as strings on the wire (`JsonStringEnumConverter`) to match the spec
+  payloads and keep the Angular models readable.
+- Verified by hand with a 14-case curl matrix (missing params, `to == from`, unknown
+  pickup/category, bad date format, sorted results, category filter, international +
+  NationalId → 422, unavailable vehicle → 422, booking round-trip, unknown reference →
+  404, domestic + NationalId → 201) before committing. Swagger UI added for development.
