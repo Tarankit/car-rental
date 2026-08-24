@@ -1,1 +1,99 @@
-/* You can add global styles to this file, and also import other style files */
+/* Global styles: shared form controls, cards and banners. */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family:
+    'Segoe UI',
+    system-ui,
+    -apple-system,
+    sans-serif;
+  background: #f4f6f9;
+  color: #1f2937;
+}
+
+h1,
+h2 {
+  font-weight: 650;
+}
+
+label {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.optional {
+  font-weight: 400;
+  color: #6b7280;
+}
+
+input,
+select {
+  padding: 0.5rem 0.6rem;
+  border: 1px solid #cbd2dc;
+  border-radius: 6px;
+  font: inherit;
+  background: #fff;
+
+  &:focus {
+    outline: 2px solid #4636b3;
+    outline-offset: 1px;
+  }
+}
+
+button {
+  padding: 0.5rem 1rem;
+  border: 1px solid #cbd2dc;
+  border-radius: 6px;
+  background: #fff;
+  font: inherit;
+  cursor: pointer;
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: default;
+  }
+
+  &.primary {
+    background: #4636b3;
+    border-color: #4636b3;
+    color: #fff;
+
+    &:hover:not(:disabled) {
+      background: #3a2c99;
+    }
+  }
+}
+
+.card {
+  background: #fff;
+  border: 1px solid #e3e6ea;
+  border-radius: 10px;
+  padding: 1.25rem 1.5rem;
+  box-shadow: 0 1px 2px rgb(16 24 40 / 5%);
+}
+
+.banner {
+  margin: 0;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+
+  &.info {
+    background: #eef2ff;
+    color: #3730a3;
+  }
+
+  &.error {
+    background: #fdecec;
+    color: #b42318;
+  }
+}
+
+.field-error {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #b42318;
+}

@@ -1,0 +1,54 @@
+<section class="booking card">
+  <h2>Book this vehicle</h2>
+
+  <dl class="summary">
+    <div><dt>Provider</dt><dd>{{ offer().providerName }}</dd></div>
+    <div><dt>Category</dt><dd>{{ categoryLabels[offer().category] }}</dd></div>
+    <div><dt>Pickup</dt><dd>{{ pickup().name }} {{ pickup().isInternational ? '(international)' : '(domestic)' }}</dd></div>
+    <div><dt>Total price</dt><dd class="total">{{ offer().totalPrice | currency: offer().currency }}</dd></div>
+    <div><dt>Cancellation</dt><dd>{{ cancellationLabels[offer().cancellationPolicy] }}</dd></div>
+  </dl>
+
+  <form [formGroup]="form" (ngSubmit)="submit()" aria-label="Driver details">
+    <div class="field">
+      <label for="driverName">Driver name</label>
+      <input id="driverName" type="text" formControlName="driverName" autocomplete="name" />
+      @if (showRequired('driverName')) {
+        <p class="field-error">Driver name is required.</p>
+      }
+    </div>
+
+    <div class="field">
+      <label for="documentType">Document type</label>
+      <select id="documentType" formControlName="documentType">
+        <option value="Passport">Passport</option>
+        <option value="NationalId">National ID</option>
+      </select>
+      @if (pickup().isInternational) {
+        <p class="hint">International pickup — a passport is required.</p>
+      }
+      @if (showPassportRequired) {
+        <p class="field-error">International pickup '{{ pickup().name }}' requires a Passport.</p>
+      }
+    </div>
+
+    <div class="field">
+      <label for="documentNumber">Document number</label>
+      <input id="documentNumber" type="text" formControlName="documentNumber" />
+      @if (showRequired('documentNumber')) {
+        <p class="field-error">Document number is required.</p>
+      }
+    </div>
+
+    @if (serverError(); as error) {
+      <p class="banner error" role="alert">{{ error }}</p>
+    }
+
+    <div class="actions">
+      <button type="button" (click)="cancelled.emit()" [disabled]="submitting()">Back to results</button>
+      <button type="submit" class="primary" [disabled]="submitting()">
+        {{ submitting() ? 'Booking…' : 'Confirm booking' }}
+      </button>
+    </div>
+  </form>
+</section>

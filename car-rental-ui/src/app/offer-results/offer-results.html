@@ -1,0 +1,42 @@
+<div class="table-wrap">
+  <table class="results" aria-label="Available vehicles">
+    <thead>
+      <tr>
+        <th>Provider</th>
+        <th>Category</th>
+        <th class="num">Per day</th>
+        <th class="num sortable">
+          <button type="button" class="sort-toggle" (click)="toggleSort()"
+                  [attr.aria-label]="'Sort by total price ' + (sortDirection() === 'asc' ? 'descending' : 'ascending')">
+            Total {{ sortDirection() === 'asc' ? '▲' : '▼' }}
+          </button>
+        </th>
+        <th>Cancellation</th>
+        <th>Insurance</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (offer of sortedOffers(); track offer.providerName + offer.vehicleId) {
+        <tr>
+          <td>
+            <span class="badge" [class.premium]="offer.providerName === 'PremiumDrive'"
+                  [class.budget]="offer.providerName === 'BudgetWheels'">
+              {{ offer.providerName }}
+            </span>
+          </td>
+          <td>{{ categoryLabels[offer.category] }}</td>
+          <td class="num">{{ offer.perDayRate | currency: offer.currency }}</td>
+          <td class="num total">{{ offer.totalPrice | currency: offer.currency }}</td>
+          <td>{{ cancellationLabels[offer.cancellationPolicy] }}</td>
+          <td>
+            <span class="insurance" [class.comprehensive]="offer.insurance === 'Comprehensive'">
+              {{ offer.insurance === 'Comprehensive' ? '✓ Comprehensive included' : 'Basic only' }}
+            </span>
+          </td>
+          <td><button type="button" class="primary" (click)="book.emit(offer)">Book</button></td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

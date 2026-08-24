@@ -110,3 +110,30 @@ roll-forward, not the package graph. Everything now targets `net10.0` (current L
 aligned 10.x packages: one consistent target beats a nominally-compatible one that breaks
 test tooling on modern machines. The brief's ".NET 8+" permits this; README states the
 prerequisite.
+
+## 6. Angular frontend
+
+**Prompt (summarised):** *"Build the Angular UI per spec.md §6: search form fed by
+/cars/locations, sortable results with all states, booking form mirroring the document
+rule client-side, confirmation view."*
+
+Decisions during implementation:
+
+- Zoneless Angular 21 with signals end-to-end: the `App` component is a small state
+  machine (`search → booking → confirmed`) over signals; components are standalone with
+  `input()`/`output()` and OnPush. No router — one flow, no URLs worth bookmarking.
+- The booking form's document rule is a **reactive-forms validator rebuilt from the
+  pickup location input** (an `effect` re-attaches it when the pickup changes), showing
+  the same message the server would return. Verified in the browser that choosing
+  National ID for Oslo blocks submission with **zero network requests** — client-side
+  validation is real, not decorative — and the server 422 path still renders verbatim
+  under the form if it ever fires.
+- The results table re-sorts client-side from a `computed()` over a sort-direction
+  signal; the API's ascending order is the default.
+- Honest limitation: the **empty state** is implemented but unreachable with the current
+  deterministic stubs (both providers cover every category and PremiumDrive is always
+  available). It exists for robustness; demoing it requires editing a stub catalogue.
+- Browser-verified end-to-end: locations load, Oslo Thu→Mon search shows 8 offers sorted
+  ascending (BW-MIN-1 at €414.00 matching the spec worked example, BW-SUV-2 absent),
+  sort toggle flips to descending, booking completes with a CR-XXXXXXXX reference, and
+  stopping the API surfaces the error banner.

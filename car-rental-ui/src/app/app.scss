@@ -1,0 +1,25 @@
+.app-header {
+  background: #1c2333;
+  color: #fff;
+  padding: 1.5rem 2rem;
+
+  h1 {
+    margin: 0;
+    font-size: 1.4rem;
+  }
+
+  p {
+    margin: 0.25rem 0 0;
+    color: #b7c0d4;
+    font-size: 0.95rem;
+  }
+}
+
+.container {
+  max-width: 64rem;
+  margin: 0 auto;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}

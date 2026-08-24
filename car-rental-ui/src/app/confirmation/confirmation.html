@@ -1,0 +1,16 @@
+<section class="confirmation card" aria-live="polite">
+  <p class="check">✓</p>
+  <h2>Booking confirmed</h2>
+  <p class="reference">Reference: <strong>{{ booking().reference }}</strong></p>
+
+  <dl class="details">
+    <div><dt>Provider</dt><dd>{{ booking().providerName }}</dd></div>
+    <div><dt>Vehicle</dt><dd>{{ categoryLabels[booking().category] }}</dd></div>
+    <div><dt>Pickup</dt><dd>{{ booking().pickupLocation }}, {{ booking().from }} → {{ booking().to }}</dd></div>
+    <div><dt>Driver</dt><dd>{{ booking().driverName }}</dd></div>
+    <div><dt>Total price</dt><dd class="total">{{ booking().totalPrice | currency: booking().currency }}</dd></div>
+    <div><dt>Cancellation</dt><dd>{{ cancellationLabels[booking().cancellationPolicy] }}</dd></div>
+  </dl>
+
+  <button type="button" class="primary" (click)="newSearch.emit()">Start a new search</button>
+</section>

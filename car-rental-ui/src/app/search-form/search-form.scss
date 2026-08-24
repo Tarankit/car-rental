@@ -1,0 +1,17 @@
+.search-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: flex-end;
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    min-width: 11rem;
+  }
+
+  button {
+    height: 2.6rem;
+  }
+}

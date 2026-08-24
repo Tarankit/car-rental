@@ -1,0 +1,61 @@
+.table-wrap {
+  overflow-x: auto;
+}
+
+.results {
+  width: 100%;
+  border-collapse: collapse;
+
+  th,
+  td {
+    text-align: left;
+    padding: 0.6rem 0.75rem;
+    border-bottom: 1px solid #e3e6ea;
+    white-space: nowrap;
+  }
+
+  th.num,
+  td.num {
+    text-align: right;
+  }
+
+  td.total {
+    font-weight: 600;
+  }
+}
+
+.sort-toggle {
+  background: none;
+  border: none;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+
+  &.premium {
+    background: #e8e6fb;
+    color: #4636b3;
+  }
+
+  &.budget {
+    background: #e0f2e9;
+    color: #1e7a4c;
+  }
+}
+
+.insurance {
+  font-size: 0.9rem;
+  color: #6b7280;
+
+  &.comprehensive {
+    color: #1e7a4c;
+  }
+}
