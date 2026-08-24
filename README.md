@@ -30,7 +30,8 @@ npm ci
 npm start
 ```
 
-Open <http://localhost:4200>.
+Open <http://localhost:4200>. While the API runs, Swagger UI is available at
+<http://localhost:5080/swagger> for poking the endpoints directly.
 
 ## Test
 

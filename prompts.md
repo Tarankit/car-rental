@@ -137,3 +137,17 @@ Decisions during implementation:
   ascending (BW-MIN-1 at €414.00 matching the spec worked example, BW-SUV-2 absent),
   sort toggle flips to descending, booking completes with a CR-XXXXXXXX reference, and
   stopping the API surfaces the error banner.
+
+## 7. Reflection & final verification
+
+**Prompt (summarised):** *"Write reflection.md, then prove the Definition of Done: clean
+clone to a temp directory, follow README verbatim, check git history order, run the
+anti-pattern greps."*
+
+The reflection is my own assessment; AI helped enumerate candidate improvement areas and
+I kept the ones I would genuinely prioritise (partial-failure resilience in the provider
+fan-out first — `Task.WhenAll` is the one piece of the design that only works because the
+stubs are in-memory). Final verification was mechanical and is recorded in the README/
+commit history: fresh clone, `dotnet test`, API boot + endpoint smoke, `npm ci` +
+production build, plus greps confirming no secrets and no `rate × days` shortcut anywhere
+in BudgetWheels pricing.
